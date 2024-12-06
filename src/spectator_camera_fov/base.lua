@@ -1,8 +1,8 @@
 return DMod:new("spectator_camera_fov", {
 	name = "Spectator camera fov",
 	author = "_atom",
-	version = "1.1",
-	categories = { "gameplay", "QoL" },
+	version = "1.2",
+	categories = { "gameplay", "qol" },
 	includes = {
 		{ "mod_localization", { type = "localization" } },
 		{ "mod_options", { type = "menu_options" } },
@@ -20,4 +20,5 @@ return DMod:new("spectator_camera_fov", {
 			end,
 		},
 	},
+	update = { id = "scfov", url = "https://raw.githubusercontent.com/mbien1981/dahm-modules/main/version.json" },
 })

@@ -16,5 +16,23 @@
         "display_name": "Loadout Dropdowns",
         "version": "1.3",
         "download_url": "https://github.com/mbien1981/dahm-modules/blob/main/loadout_dropdowns.zip?raw=true"
+    },
+    "scfov": {
+        "author": "_atom",
+        "display_name": "Spectator Camera FOV",
+        "version": "1.2",
+        "download_url": "https://github.com/mbien1981/dahm-modules/blob/main/spectator_camera_fov.zip?raw=true"
+    },
+    "hnp": {
+        "author": "_atom",
+        "display_name": "Hide Nearby PLayers",
+        "version": "1",
+        "download_url": "https://github.com/mbien1981/dahm-modules/blob/main/hide_nearby_players.zip?raw=true"
+    },
+    "mutecivs": {
+        "author": "_atom",
+        "display_name": "Mute Civilians",
+        "version": "1.2",
+        "download_url": "https://github.com/mbien1981/dahm-modules/blob/main/mute_civilians.zip?raw=true"
     }
 }
