@@ -2,7 +2,7 @@
     "_hud": {
         "author": "_atom",
         "display_name": "_hud",
-        "version": "1.6.6",
+        "version": "1.6.7",
         "download_url": "https://github.com/mbien1981/dahm-modules/blob/main/_hud.zip?raw=true"
     },
     "_sdk": {
@@ -14,7 +14,7 @@
     "dropdowns": {
         "author": "_atom",
         "display_name": "Loadout Dropdowns",
-        "version": "1.3",
+        "version": "1.4",
         "download_url": "https://github.com/mbien1981/dahm-modules/blob/main/loadout_dropdowns.zip?raw=true"
     },
     "scfov": {
