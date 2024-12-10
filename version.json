@@ -38,7 +38,7 @@
     "env_selector": {
         "author": "_atom",
         "display_name": "Environment Selector",
-        "version": "2.0",
+        "version": "2.1",
         "download_url": "https://github.com/mbien1981/dahm-modules/blob/main/environment_selector.zip?raw=true"
     }
 }
