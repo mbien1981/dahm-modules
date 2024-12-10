@@ -34,5 +34,11 @@
         "display_name": "Mute Civilians",
         "version": "1.2",
         "download_url": "https://github.com/mbien1981/dahm-modules/blob/main/mute_civilians.zip?raw=true"
+    },
+    "env_selector": {
+        "author": "_atom",
+        "display_name": "Environment Selector",
+        "version": "2.0",
+        "download_url": "https://github.com/mbien1981/dahm-modules/blob/main/environment_selector.zip?raw=true"
     }
 }
