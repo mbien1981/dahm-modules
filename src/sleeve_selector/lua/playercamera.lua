@@ -2,7 +2,7 @@ local module = ... or D:module("sleeve_selector")
 
 local PlayerCamera = module:hook_class("PlayerCamera")
 module:hook(50, PlayerCamera, "spawn_camera_unit", function(self)
-	local unit_folder = managers.player.selected_suit or "suit"
+	local unit_folder = managers.player.selected_suit or "default"
 
 	local level_id = tablex.get(Global, "level_data", "level_id")
 	if unit_folder == "suit" and level_id == "hospital" then
