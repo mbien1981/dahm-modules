@@ -22,7 +22,7 @@ local packages = {
 }
 
 module:post_hook(GameSetup, "init_finalize", function(self)
-	local level_id = Global.game_settings.level_id
+	local level_id = tablex.get(Global.game_settings, "level_id")
 	if not level_id then
 		return
 	end

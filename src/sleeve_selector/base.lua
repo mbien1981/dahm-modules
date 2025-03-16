@@ -1,7 +1,7 @@
 return DMod:new("sleeve_selector", {
 	name = "Sleeve selector",
 	author = "_atom",
-	version = "1.5",
+	version = "1.6",
 	includes = {
 		{ "mod_localization", { type = "localization" } },
 		{ "mod_options", { type = "menu_options" } },

@@ -28,7 +28,10 @@ module:hook(50, PlayerMovement, "set_character_anim_variables", function(self)
 
 	local selected_suit = managers.player.selected_suit
 
-	local selected_mesh = mesh_names[selected_suit] or mesh_names["suit"]
+	local level_id = tablex.get(Global.level_data, "level_id")
+	local default_suit = tablex.get(tweak_data.levels, level_id, "unit_suit") or "suit"
+	local selected_mesh = mesh_names[selected_suit] or mesh_names[default_suit] or mesh_names["suit"]
+
 	local mesh_name = Idstring("g_fps_hand" .. selected_mesh[character_name])
 	if not D:conf("ss_disable_sleeve_swap") and (selected_suit == "default" or selected_suit == "suit") then
 		local suffix = managers.player._player_mesh_suffix
