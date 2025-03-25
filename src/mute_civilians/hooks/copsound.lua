@@ -7,6 +7,12 @@ local whisper_list = {
 	[Idstring(nurse_path):key()] = true,
 }
 
+-- seems like whisper_mode is not re-enabled during the 'play doctor' phase
+local sound_whitelist = {
+	["Play_zombie_no_round_1"] = true,
+	["Play_zombie_yes_round_1"] = true,
+}
+
 local module = ... or D:module("mute_civilians")
 local CopSound = module:hook_class("CopSound")
 module:post_hook(CopSound, "init", function(self, unit)
@@ -16,8 +22,12 @@ module:post_hook(CopSound, "init", function(self, unit)
 	self._allow_during_whisper = whisper_list[unit:name():key()]
 end)
 
-module:hook(CopSound, "speech_allowed", function(self)
+module:hook(CopSound, "speech_allowed", function(self, sound_name)
 	if not self._speech_disabled then
+		return true
+	end
+
+	if sound_whitelist[sound_name] then
 		return true
 	end
 
@@ -34,7 +44,7 @@ module:hook(CopSound, "speech_allowed", function(self)
 end)
 
 module:hook(CopSound, "_play", function(self, sound_name, source_name)
-	if not self:speech_allowed() then
+	if not self:speech_allowed(sound_name) then
 		return nil
 	end
 
