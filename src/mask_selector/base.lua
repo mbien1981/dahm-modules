@@ -1,7 +1,7 @@
 return DMod:new("custom_mask_selector", {
 	name = "Custom Mask Selector Interface",
 	author = "_atom",
-	version = "2.1",
+	version = "2.2",
 	categories = { "qol" },
 	dependencies = { "[drop_in_menu]", "[character_n_mask_in_loadout]" },
 	hooks = {

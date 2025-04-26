@@ -370,7 +370,7 @@ function MaskSelectorGUIClass:show()
 	self._active = true
 end
 
-function MaskSelectorGUIClass:close()
+function MaskSelectorGUIClass:hide()
 	if not self:is_active() then
 		return
 	end
@@ -397,7 +397,7 @@ function MaskSelectorGUIClass:keyboard_cancel()
 		return
 	end
 
-	self:close()
+	self:hide()
 end
 
 function MaskSelectorGUIClass:set_mask_selection_index(amount)
@@ -644,7 +644,7 @@ function MaskSelectorGUIClass:activate_item(item)
 		clbk(self)
 	end
 
-	self:close()
+	self:hide()
 end
 
 local ids_left_click = Idstring("0")
@@ -656,7 +656,7 @@ function MaskSelectorGUIClass:mouse_press(_, button, x, y)
 
 	if button == ids_left_click then
 		if not self:is_mouse_in_panel(self.feature_panel) then
-			self:close()
+			self:hide()
 			return
 		end
 
@@ -736,8 +736,9 @@ if RequiredScript == "lib/states/ingamewaitingforplayers" then
 			return
 		end
 
-		QuickMaskMenu:destroy()
-		_M.QuickMaskMenu = nil
+		QuickMaskMenu:hide()
+		-- QuickMaskMenu:destroy()
+		-- _M.QuickMaskMenu = nil
 	end)
 end
 

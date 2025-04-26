@@ -50,7 +50,7 @@
     "mask_selector": {
         "author": "_atom",
         "display_name": "Custom Mask Selector Interface",
-        "version": "2.1",
+        "version": "2.2",
         "download_url": "https://github.com/mbien1981/dahm-modules/blob/main/mask_selector.zip?raw=true"
     }
 }
