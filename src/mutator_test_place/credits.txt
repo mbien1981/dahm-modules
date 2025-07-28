@@ -1,0 +1,16 @@
+A rewritten version of DrNewbie's PDTH-Test Place mod.
+
+Author profile: https://modworkshop.net/user/7573
+Original mod page: https://modworkshop.net/mod/35454
+
+List of changes:
+- Steam stat publishing and in-game challenge progression is disabled.
+- The mod now behaves as a mutator instead of completely overriding Panic Room when playing single player.
+- The mission is now properly disabled using DAHM's script manager instead of overriding mission element methods.
+- The 'quick hands' challenge and achievement no longer counts as completed while playing with the mod enabled.
+- Decoration units have been removed from the roof.
+- Previously spawned enemies will be deleted when activating the enemy spawner again.
+- Previously spawned bags will be deleted when activating the bag spawner again.
+- The weapon spawner has been repositioned and now you are able to interact with the spawned gun in order to equip it.
+- Added a 'Test' button that will run a user defined script in util.lua
+- Added partial multiplayer support.
