@@ -373,8 +373,11 @@ local create_default = {
 				if not tablex.empty(enemy_list) then
 					for i, unit in ipairs(enemy_list) do
 						if alive(unit) then
+							if not unit:character_damage():dead() then
+								unit:character_damage().drop_pickup = function() end
+								unit:character_damage():die()
+							end
 							unit:base():pre_destroy(unit)
-							unit:character_damage():die()
 							unit:set_slot(0)
 						end
 
