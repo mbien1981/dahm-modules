@@ -1,6 +1,6 @@
 return DMod:new("test_place_mutator", {
 	author = "Dr_Newbie, _atom",
-	version = "7",
+	version = "7.1",
 	categories = { "gameplay", "mutator" },
 	dependencies = { "ovk_193", "scriman" },
 	localization = {
