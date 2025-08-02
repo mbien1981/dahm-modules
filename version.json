@@ -58,5 +58,11 @@
         "display_name": "Test Place Mutator",
         "version": "7.1",
         "download_url": "https://github.com/mbien1981/dahm-modules/blob/main/mutator_test_place.zip?raw=true"
+    },
+    "smart_weapon_switch": {
+        "author": "_atom",
+        "display_name": "Test Place Mutator",
+        "version": "7.1",
+        "download_url": "https://github.com/mbien1981/dahm-modules/blob/main/smart_weapon_switch.zip?raw=true"
     }
 }
