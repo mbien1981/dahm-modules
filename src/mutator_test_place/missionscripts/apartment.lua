@@ -332,7 +332,7 @@ local create_default = {
 			debug_string = "All buttons reset",
 		},
 	},
-	{
+	{ -- enemy spawner
 		id = 900004,
 		class = "ElementUnitSequenceTrigger",
 		module = "CoreElementUnitSequenceTrigger",
@@ -410,7 +410,7 @@ local create_default = {
 			end,
 		},
 	},
-	{
+	{ -- bag spawner
 		id = 900006,
 		class = "ElementUnitSequenceTrigger",
 		module = "CoreElementUnitSequenceTrigger",
@@ -470,7 +470,7 @@ local create_default = {
 			end,
 		},
 	},
-	{
+	{ -- weapon spawner
 		id = 900008,
 		class = "ElementUnitSequenceTrigger",
 		module = "CoreElementUnitSequenceTrigger",
@@ -479,8 +479,9 @@ local create_default = {
 			enabled = true,
 			on_executed = {
 				{ id = 900002, delay = 0 },
-				{ id = 900009, delay = 0 },
-				{ id = 900010, delay = 0 },
+				{ id = 900014, delay = 0 }, -- update wanted weapon
+				{ id = 900009, delay = 0 }, -- spawn weapon dummy
+				{ id = 900010, delay = 0 }, -- enable pickup interaction
 			},
 			position = Vector3(),
 			rotation = Rotation(),
@@ -494,38 +495,13 @@ local create_default = {
 	},
 	{
 		id = 900009,
-		class = "ElementDebug",
-		module = "CoreElementDebug",
+		class = "ElementSpawnWeaponDummy",
 		editor_name = "spawn_weapon_pickup",
 		values = {
 			enabled = true,
-			on_executed = {},
-			position = Vector3(),
+			position = Vector3(-1025, 275, 1800),
 			rotation = Rotation(),
-			debug_string = "Weapon pickup spawned",
-			on_pre_executed = function()
-				if Network:is_client() then
-					return
-				end
-
-				local weapon_data = _mission_data.weapon
-				if alive(weapon_data.unit) then
-					util.delete_unit(weapon_data.unit)
-					weapon_data.unit = nil
-				end
-
-				local weapon_list = PlayerInventory._index_to_weapon_list
-				local weapon_id = weapon_list[weapon_data.index]
-				local pos, rot = Vector3(-1025, 275, 1800), Rotation()
-
-				weapon_data.weapon_id = weapon_id
-				weapon_data.unit = util.spawn_weapon(weapon_id, pos, rot)
-
-				weapon_data.index = weapon_data.index + 1
-				if weapon_data.index > (#weapon_list - 2) then -- last 2 weapons are enemy weapons and crash the game.
-					weapon_data.index = 1
-				end
-			end,
+			target_element = 900013,
 		},
 	},
 	{
@@ -584,32 +560,34 @@ local create_default = {
 					sequence = "interact",
 				},
 			},
+			-- execute_as_client = true,
 		},
 	},
 	{
 		id = 900013,
-		class = "ElementDebug",
-		module = "CoreElementDebug",
+		class = "ElementGiveWeapon",
 		editor_name = "pickup_weapon",
+		values = {
+			enabled = true,
+			position = Vector3(),
+			rotation = Rotation(),
+			-- execute_as_client = true,
+		},
+	},
+	{
+		id = 900014,
+		class = "ElementIncreaseIndex",
+		editor_name = "increase_weapon_index",
 		values = {
 			enabled = true,
 			on_executed = {},
 			position = Vector3(),
 			rotation = Rotation(),
-			debug_string = "Pickup weapon",
-			on_pre_executed = function()
-				if Network:is_client() then
-					return
-				end
-
-				local weapon_data = _mission_data.weapon
-				local weapon_id = weapon_data.weapon_id
-				util.give_weapon(weapon_id)
-			end,
+			elements = { 900013 },
 		},
 	},
 	{
-		id = 900014,
+		id = 900015,
 		class = "ElementUnitSequenceTrigger",
 		module = "CoreElementUnitSequenceTrigger",
 		editor_name = "check_test_button_press",
@@ -630,7 +608,7 @@ local create_default = {
 		},
 	},
 	{
-		id = 900015,
+		id = 900016,
 		class = "ElementDebug",
 		module = "CoreElementDebug",
 		editor_name = "test_button",

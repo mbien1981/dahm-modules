@@ -1,6 +1,6 @@
 return DMod:new("test_place_mutator", {
 	author = "Dr_Newbie, _atom",
-	version = "7.1",
+	version = "7.2",
 	categories = { "gameplay", "mutator" },
 	dependencies = { "ovk_193", "scriman" },
 	localization = {
@@ -140,6 +140,9 @@ return DMod:new("test_place_mutator", {
 				end)
 			end,
 		},
+		{ "lib/managers/missionmanager", "elementgiveweapon" },
+		{ "lib/managers/missionmanager", "elementincreaseindex" },
+		{ "lib/managers/missionmanager", "elementspawnweapondummy" },
 	},
 	update = {
 		id = "mutator_test_place",
