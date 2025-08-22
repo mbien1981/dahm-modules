@@ -4,7 +4,7 @@ return DMod:new("smart_weapon_switch", {
 	description = "Improves weapon switching logic: queue switches while reloading, change queued selection mid-switch, and double-tap to override instantly.",
 	dependencies = { "[interact_toggle]" },
 	author = "_atom",
-	version = "1.4",
+	version = "1.5",
 	categories = { "QoL", "gameplay" },
 	config = {
 		{
@@ -41,16 +41,37 @@ return DMod:new("smart_weapon_switch", {
 				help_id = "sws_force_switch_after_loading_shell_help",
 			},
 		},
+		{
+			"menu",
+			"sws_melee_cancel_queue",
+			{
+				type = "multi_choice",
+				text_id = "sws_melee_cancel_queue",
+				help_id = "sws_melee_cancel_queue_help",
+				choices = {
+					{ false, "sws_never" },
+					{ "on_not_weapon_empty", "sws_on_not_weapon_empty" },
+					{ "always", "sws_always" },
+				},
+				default_value = "default",
+			},
+		},
 	},
 	localization = {
 		["sws_show_queue_hints"] = "Show hints on switch queue",
 		["sws_show_queue_hints_help"] = "Show screen hints about the queue system while reloading.",
 		["sws_min_reload_remaining_pct"] = "Force weapon switch threshold (%)",
-		["sws_min_reload_remaining_pct_help"] = "When attempting to switch weapons during a reload, if the current reload has this much or more remaining (in percent), the switch will be forced immediately. Value is the percent of reload left (1-100).",
+		["sws_min_reload_remaining_pct_help"] = "When attempting to switch weapons during a reload, if the current reload has this much or more remaining (in percent), the switch will be forced immediately. Value is the percent of reload left (1-100).\nQueued weapon switches can be cancelled by attempting to equip the currently selected weapon.",
 		["sws_force_switch_after_loading_shell"] = "Force weapon switch after loading a shell",
 		["sws_force_switch_after_loading_shell_help"] = "When enabled, if a weapon switch is queued while reloading a shotgun (shell-by-shell reload), the switch will be performed immediately after the next shell is loaded, without waiting for the full reload to finish.",
 		["sws_hint_doubletap_to_force_switch"] = "Weapon switch queued; double-tap to force switching weapons.",
 		["sws_hint_switching_after_shell_load"] = "Weapon switch queued; switching weapons after finishing loading the next shell.",
+		["sws_hint_switch_cancelled"] = "Weapon switch queue cancelled.",
+		["sws_melee_cancel_queue"] = "Cancel weapon switch queue with melee",
+		["sws_melee_cancel_queue_help"] = "When enabled, performing a melee attack will cancel your current weapon switch queue.",
+		["sws_never"] = "never",
+		["sws_on_not_weapon_empty"] = "If weapon is magazine is not empty",
+		["sws_always"] = "Always",
 	},
 	hooks = {
 		["lib/units/beings/player/states/playerstandard"] = function(module)
@@ -135,6 +156,15 @@ return DMod:new("smart_weapon_switch", {
 				managers.hud:show_hint({ text = managers.localization:text(hint), time = 3.5 })
 			end)
 
+			module:hook(PlayerStandard, "show_weapon_switch_cancel_hint", function(self, duration)
+				if not D:conf("sws_show_queue_hints") then
+					return
+				end
+
+				local hint = "sws_hint_switch_cancelled"
+				managers.hud:show_hint({ text = managers.localization:text(hint), time = duration or 3.5 })
+			end)
+
 			module:hook(PlayerStandard, "_should_force_switch", function(self, t, input_index)
 				local last_index = self._queued_reload_switch_index
 				local last_time = self._queued_reload_switch_t or 0
@@ -146,9 +176,18 @@ return DMod:new("smart_weapon_switch", {
 				return (last_index == input_index and delay < 0.35) or reload_time_check
 			end)
 
+			module:hook(PlayerStandard, "_queued_weapon_switch", function(self)
+				return self._wanted_index or self._queued_reload_switch_index
+			end)
+
 			module:hook(PlayerStandard, "_consume_queued_switch", function(self)
-				self._selection_wanted = true
 				self._wanted_index = self._queued_reload_switch_index
+				self._queued_reload_switch_index = nil
+				self._queued_reload_switch_t = nil
+			end)
+
+			module:hook(PlayerStandard, "_clear_queued_switch", function(self)
+				self._wanted_index = nil
 				self._queued_reload_switch_index = nil
 				self._queued_reload_switch_t = nil
 			end)
@@ -160,10 +199,7 @@ return DMod:new("smart_weapon_switch", {
 
 					if self._ext_inventory:is_selection_available(selection_wanted) then
 						self:_start_action_unequip_weapon(t, { selection_wanted = selection_wanted })
-						self._selection_wanted = false
-						self._wanted_index = nil
-						self._queued_reload_switch_index = nil
-						self._queued_reload_switch_t = nil
+						self:_clear_queued_switch()
 						return true
 					end
 				end
@@ -186,13 +222,13 @@ return DMod:new("smart_weapon_switch", {
 					self:_consume_queued_switch()
 				end
 
-				if is_reloading and input_index and not is_equipped then
+				if is_reloading and input_index and is_equipped then
+					self:_clear_queued_switch()
+					self:show_weapon_switch_cancel_hint()
+				elseif is_reloading and input_index and not is_equipped then
 					if self:_should_force_switch(t, input_index) then
 						self:_start_action_unequip_weapon(t, { selection_wanted = input_index })
-						self._selection_wanted = false
-						self._wanted_index = nil
-						self._queued_reload_switch_index = nil
-						self._queued_reload_switch_t = nil
+						self:_clear_queued_switch()
 						new_action = true
 						return new_action
 					else
@@ -213,10 +249,7 @@ return DMod:new("smart_weapon_switch", {
 					new_action = not is_equipped
 					if new_action then
 						self:_start_action_unequip_weapon(t, { selection_wanted = selection_wanted })
-						self._selection_wanted = false
-						self._wanted_index = nil
-						self._queued_reload_switch_index = nil
-						self._queued_reload_switch_t = nil
+						self:_clear_queued_switch()
 					end
 				end
 
@@ -277,7 +310,6 @@ return DMod:new("smart_weapon_switch", {
 			end, false)
 
 			module:hook(PlayerStandard, "_queue_weapon_switch_during_reload", function(self, index)
-				self._selection_wanted = true
 				self._wanted_index = index
 			end)
 
@@ -301,6 +333,30 @@ return DMod:new("smart_weapon_switch", {
 
 			module:post_hook(PlayerStandard, "_start_action_equip_weapon", function(self, t)
 				self._weapon_state = WEAPON_EQUIPPED
+			end)
+
+			module:hook(PlayerStandard, "_check_weapon_queue_cancel_on_melee", function(self)
+				if not self:_queued_weapon_switch() then
+					return false
+				end
+
+				local setting = D:conf("sws_melee_cancel_queue")
+				if not setting then
+					return false
+				end
+
+				if setting == "on_not_weapon_empty" then
+					return not self._equipped_unit:base():clip_empty()
+				end
+
+				return true
+			end)
+
+			module:pre_hook(PlayerStandard, "_check_action_melee", function(self, t, input)
+				if input.btn_melee_press and self:_check_weapon_queue_cancel_on_melee() then
+					self:_clear_queued_switch()
+					self:show_weapon_switch_cancel_hint(1)
+				end
 			end)
 		end,
 	},

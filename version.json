@@ -62,7 +62,7 @@
     "smart_weapon_switch": {
         "author": "_atom",
         "display_name": "Smart Weapon Switch",
-        "version": "1.4",
+        "version": "1.5",
         "download_url": "https://github.com/mbien1981/dahm-modules/blob/main/smart_weapon_switch.zip?raw=true"
     }
 }
