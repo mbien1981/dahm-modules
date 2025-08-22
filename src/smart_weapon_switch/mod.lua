@@ -4,7 +4,7 @@ return DMod:new("smart_weapon_switch", {
 	description = "Improves weapon switching logic: queue switches while reloading, change queued selection mid-switch, and double-tap to override instantly.",
 	dependencies = { "[interact_toggle]" },
 	author = "_atom",
-	version = "1.3",
+	version = "1.4",
 	categories = { "QoL", "gameplay" },
 	config = {
 		{
@@ -71,7 +71,7 @@ return DMod:new("smart_weapon_switch", {
 				local is_empty = weapon_base:clip_empty()
 				local anim_suffix = is_empty and ("reload_" .. name_id) or ("reload_not_empty_" .. name_id)
 				local camera_redirect = Idstring(anim_suffix)
-				local reload_anim = is_empty and nil or "reload_not_empty"
+				local reload_anim = not is_empty and "reload_not_empty"
 
 				self._unit:camera():play_redirect(camera_redirect, speed_multiplier)
 
@@ -173,7 +173,7 @@ return DMod:new("smart_weapon_switch", {
 				local input_index = input.btn_primary_choice
 				local pending_index = self._wanted_index
 				local queued_index = self._queued_reload_switch_index
-				local is_reloading = self:_is_reloading()
+				local is_reloading = not self._reload_exit_expire_t and self:_is_reloading()
 
 				local selection_wanted = input_index or pending_index or queued_index
 				if not selection_wanted or not self._ext_inventory:is_selection_available(selection_wanted) then
