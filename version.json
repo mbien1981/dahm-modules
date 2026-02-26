@@ -59,6 +59,12 @@
         "version": "7.2",
         "download_url": "https://github.com/mbien1981/dahm-modules/blob/main/mutator_test_place.zip?raw=true"
     },
+    "mutator_nm_rand_cameras": {
+        "author": "_atom",
+        "display_name": "Test Place Mutator",
+        "version": "1.2",
+        "download_url": "https://github.com/mbien1981/dahm-modules/blob/main/mutator_nm_rand_cameras.zip?raw=true"
+    },
     "smart_weapon_switch": {
         "author": "_atom",
         "display_name": "Smart Weapon Switch",

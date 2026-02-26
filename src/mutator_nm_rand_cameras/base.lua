@@ -1,6 +1,7 @@
 return DMod:new("nm_rand_cams", {
 	name = "No Mercy Random Cameras",
 	author = "_atom",
+	version = "1.2",
 	dependencies = { "scriman", "ovk_193" },
 	category = "mutator",
 	hooks = {
@@ -15,7 +16,7 @@ return DMod:new("nm_rand_cams", {
 				}
 
 				local mutator_key = module:id()
-				if not MutatorHelper.setup_mutator(module, mutator_key, availability, nil, false, false) then
+				if not MutatorHelper.setup_mutator(module, mutator_key, availability, nil) then
 					return
 				end
 
@@ -42,5 +43,9 @@ return DMod:new("nm_rand_cams", {
 		["mutator_nm_rand_cams_motd"] = {
 			english = "This server is running a mutator which adds a chance for there to be 12 cameras when there is four players.",
 		},
+	},
+	update = {
+		id = "mutator_nm_rand_cameras",
+		url = "https://raw.githubusercontent.com/mbien1981/dahm-modules/main/version.json",
 	},
 })
