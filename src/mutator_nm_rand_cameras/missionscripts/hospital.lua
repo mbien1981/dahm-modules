@@ -295,7 +295,7 @@ local setup_script = {
 			on_executed = {
 				{ id = roll_camera_amount, delay = 0 },
 			},
-			player_1 = true,
+			player_1 = false,
 			player_2 = false,
 			player_3 = false,
 			player_4 = true,
@@ -319,7 +319,7 @@ append_elements(create_default, setup_script)
 ---
 local spawnSecurityCameras = 700114 -- decide amount of cameras
 
-local singleplayer = 700115 -- spawn camera logic for 1 player
+-- local singleplayer = 700115 -- spawn camera logic for 1 player
 local three_and_four_players = 700117 -- original name: '3and4Players', spawn camera logic for 3 and 4 players
 
 local func_sequence_trigger_001 = 700164 -- broken camera checker
@@ -340,7 +340,7 @@ local setup_event = {
 		},
 	},
 
-	{ id = singleplayer, values = { enabled = false } }, -- for testing
+	-- { id = singleplayer, values = { enabled = false } }, -- for testing
 	{ id = three_and_four_players, editor_name = "3Players", values = { player_4 = false } }, -- rename element, disable for 4 players
 
 	-- allow counting broken cameras to our custom logic

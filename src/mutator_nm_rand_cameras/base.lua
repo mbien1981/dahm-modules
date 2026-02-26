@@ -1,7 +1,7 @@
 return DMod:new("nm_rand_cams", {
 	name = "No Mercy Random Cameras",
 	author = "_atom",
-	version = "1.2",
+	version = "1.3",
 	dependencies = { "scriman", "ovk_193" },
 	category = "mutator",
 	hooks = {
